@@ -54,6 +54,7 @@ public class TitaniumIdentityModule extends KrollModule
 	@Kroll.constant public static final int ERROR_TOUCH_ID_NOT_AVAILABLE = -3;
 	@Kroll.constant public static final int ERROR_PASSCODE_NOT_SET = -4;
 	@Kroll.constant public static final int ERROR_KEY_PERMANENTLY_INVALIDATED = -5;
+	@Kroll.constant public static final int ERROR_AUTHENTICATION_NO_MESSAGE_ID = -1;
 
 	@Kroll.constant public static final int FINGERPRINT_ACQUIRED_PARTIAL = FingerprintManager.FINGERPRINT_ACQUIRED_PARTIAL;
 	@Kroll.constant public static final int FINGERPRINT_ACQUIRED_INSUFFICIENT = FingerprintManager.FINGERPRINT_ACQUIRED_INSUFFICIENT;

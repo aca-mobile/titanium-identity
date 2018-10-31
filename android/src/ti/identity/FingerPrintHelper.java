@@ -27,7 +27,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -127,11 +126,12 @@ public class FingerPrintHelper extends FingerprintManager.AuthenticationCallback
 				.authenticate(mCryptoObject, cancellationSignal(), 0 /* flags */, this, null);
 	}
 
-	private void onError(String errMsg) {
+	private void onError(int messageId, String errMsg) {
 		if (callback != null && krollObject != null) {
 			KrollDict dict = new KrollDict();
 			dict.put("success", false);
 			dict.put("error", errMsg);
+			dict.put("errorMessageId", messageId);
 			callback.callAsync(krollObject, dict);
 		}
 	}
@@ -150,13 +150,13 @@ public class FingerPrintHelper extends FingerprintManager.AuthenticationCallback
 				callback.callAsync(krollObject, dict);
 			}
 		} catch (Exception e) {
-			onError("Failed to encrypt the data with the generated key.");
+			onError(TitaniumIdentityModule.ERROR_AUTHENTICATION_NO_MESSAGE_ID,"Failed to encrypt the data with the generated key.");
 		}
 	}
 
 	@Override
 	public void onAuthenticationError(int errMsgId, CharSequence errString) {
-		onError(errString.toString());
+		onError(errMsgId, errString.toString());
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class FingerPrintHelper extends FingerprintManager.AuthenticationCallback
 
 	@Override
 	public void onAuthenticationFailed() {
-		onError("Unable to recognize fingerprint");
+		onError(TitaniumIdentityModule.ERROR_AUTHENTICATION_NO_MESSAGE_ID, "Unable to recognize fingerprint");
 
 	}
 
@@ -256,7 +256,6 @@ public class FingerPrintHelper extends FingerprintManager.AuthenticationCallback
 		}
 
 		if (error.isEmpty()) {
-			response.put("canAuthenticate", true);
 			response.put("canAuthenticate", true);
 		} else {
 			response.put("canAuthenticate", false);
